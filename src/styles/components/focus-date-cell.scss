@@ -1,0 +1,31 @@
+.focusDateCell {
+  width: 13.5%;
+
+  &__focus-date-container {
+    background: $color-green-3;
+    padding: 24px 32px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  &__focus-date {
+    color: $color-black;
+    font-size: 30px;
+    font-weight: 900;
+  }
+
+  &__focus-name-container {
+    background: $color-green-4;
+    padding: 104px 0px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  &__focus-name {
+    color: $color-white;
+    font-size: 36px;
+    font-weight: 600;
+    word-wrap: break-word;
+  }
+}

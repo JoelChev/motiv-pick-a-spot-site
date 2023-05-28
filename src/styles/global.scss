@@ -1,0 +1,33 @@
+body {
+  background: $color-green-1;
+  margin: 60px;
+  overflow-y: hidden;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Rubik";
+    margin: 0;
+    padding: 0;
+    color: $color-black;
+  }
+
+  h2 {
+    font-weight: 500;
+  }
+
+  a {
+    font-family: "Rubik";
+  }
+
+  p,
+  span,
+  label {
+    font-size: 18px;
+    line-height: 24px;
+    font-family: "Rubik";
+    color: $color-black;
+  }
+}
