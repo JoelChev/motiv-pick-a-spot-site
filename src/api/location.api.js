@@ -15,3 +15,13 @@ export const get = async (params) => {
 
   return data.data;
 };
+
+export const getOne = async (id) => {
+  const { data, error } = await to(axios.get(`${url}/locations/${id}`));
+
+  if (error) {
+    throw error;
+  }
+
+  return data.data;
+};
