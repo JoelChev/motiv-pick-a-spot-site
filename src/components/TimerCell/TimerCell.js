@@ -43,6 +43,10 @@ export default function TimerCell(props) {
     const minutesDisplay = minutes < 10 ? `0${minutes}` : `${minutes}`;
     const secondsDisplay = seconds < 10 ? `0${seconds}` : `${seconds}`;
 
+    if (seconds < 0) {
+      return "00:00";
+    }
+
     if (hours > 0) {
       return `${hoursDisplay}:${minutesDisplay}:${secondsDisplay}`;
     }
