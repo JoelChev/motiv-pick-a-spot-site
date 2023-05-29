@@ -15,14 +15,10 @@ import {
   FocusDateService,
   LocationService,
   ClassRoomService,
-  ClassSessionService,
 } from "../../services";
-import HeadingCell from "../HeadingCell/HeadingCell";
-import FocusDateCell from "../FocusDateCell/FocusDateCell";
-import LocationCell from "../LocationCell/LocationCell";
-import LogoCell from "../LogoCell/LogoCell";
 import ClassAndAttendanceContainer from "../ClassAndAttendanceContainer/ClassAndAttendanceContainer";
 import FocusScheduleRow from "../FocusScheduleRow/FocusScheduleRow";
+import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
 
 const pickASpotGrid = "pickASpotGrid";
 
@@ -149,6 +145,34 @@ export default function PickaSpotGrid(props) {
     );
   };
 
+  const getClassRoomTabs = () => {
+    const classRoomTabs = [];
+    classRooms.forEach((classRoom, index) => {
+      classRoomTabs.push(
+        <ClassRoomTab
+          key={`class-and-attendance-container-${index}`}
+          classRoom={classRooms[index]}
+          isSelected={index % 2 === 0}
+        />
+      );
+    });
+    return classRoomTabs;
+  };
+
+  const getClassAndAttendanceContainers = () => {
+    const classAndAttendanceContainers = [];
+    classRooms.forEach((classRoom, index) => {
+      classAndAttendanceContainers.push(
+        <ClassAndAttendanceContainer
+          key={`class-and-attendance-container-${index}`}
+          location={location}
+          classRoom={classRooms[index]}
+        />
+      );
+    });
+    return classAndAttendanceContainers;
+  };
+
   return (
     <React.Fragment>
       {loading && (
@@ -160,14 +184,8 @@ export default function PickaSpotGrid(props) {
 
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
-          <ClassAndAttendanceContainer
-            location={location}
-            classRoom={classRooms[0]}
-          />
-          <ClassAndAttendanceContainer
-            location={location}
-            classRoom={classRooms[1]}
-          />
+          {getClassRoomTabs()}
+          {getClassAndAttendanceContainers()}
           <FocusScheduleRow
             focusDates={focusDates.slice(0, 6)}
             isFirst={true}

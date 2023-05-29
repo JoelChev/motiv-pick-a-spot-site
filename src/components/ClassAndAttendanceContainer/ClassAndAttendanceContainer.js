@@ -12,18 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import classNames from "classnames";
 
-import {
-  FocusDateService,
-  LocationService,
-  ClassRoomService,
-  ClassSessionService,
-  PickASpotService,
-} from "../../services";
-import HeadingCell from "../HeadingCell/HeadingCell";
-import FocusDateCell from "../FocusDateCell/FocusDateCell";
-import LocationCell from "../LocationCell/LocationCell";
-import LogoCell from "../LogoCell/LogoCell";
-import FocusScheduleRow from "../FocusScheduleRow/FocusScheduleRow";
+import { ClassSessionService, PickASpotService } from "../../services";
 import ClassCell from "../ClassCell/ClassCell";
 import AttendanceContainer from "../AttendanceContainer/AttendanceContainer";
 import TimerCell from "../TimerCell/TimerCell";
