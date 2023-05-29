@@ -17,40 +17,108 @@ import {
   LocationService,
   ClassRoomService,
   ClassSessionService,
+  PickASpotService,
 } from "../../services";
 import HeadingCell from "../HeadingCell/HeadingCell";
 import FocusDateCell from "../FocusDateCell/FocusDateCell";
 import LocationCell from "../LocationCell/LocationCell";
 import LogoCell from "../LogoCell/LogoCell";
 import FocusScheduleRow from "../FocusScheduleRow/FocusScheduleRow";
+import ClassCell from "../ClassCell/ClassCell";
+import AttendanceContainer from "../AttendanceContainer/AttendanceContainer";
+import TimerCell from "../TimerCell/TimerCell";
 
 const classAndAttendanceContainer = "classAndAttendanceContainer";
 
 let THREE_HOURS = 3 * 60 * 60 * 1000;
 
 export default function ClassAndAttendanceContainer(props) {
-  const { classRoom, classSessions } = props;
+  const { location, classRoom } = props;
 
   const [loading, setLoading] = React.useState(false);
+  const [classSessions, setClassSessions] = React.useState([]);
   const [pickASpotData, setPickASpotData] = React.useState(null);
   const [error, setError] = React.useState(null);
 
-  //   // This effect refreshes the classroom data.
-  //   React.useEffect(() => {
-  //     fetchClassRoomData();
-  //   }, [location]);
+  //This effect refreshes the pick a spot data.
+  React.useEffect(() => {
+    fetchClassSessionData();
+  }, []);
 
-  //   // This effect refreshes the class session data.
-  //   React.useEffect(() => {
-  //     const fetchClassSessionDataForClassrooms = async () => {
-  //       setLoading(true);
-  //       for (let classRoom of classRooms) {
-  //         await fetchClassSessionData(classRoom);
-  //       }
-  //       setLoading(false);
-  //     };
-  //     fetchClassSessionDataForClassrooms();
-  //   }, [classRooms]);
+  const fetchClassSessionData = async () => {
+    // Get the class sessions
+    let classSessionsResponse = {
+      data: [],
+      error: null,
+    };
+
+    const curDate = new Date();
+    const minDate = curDate.toLocaleDateString("en-CA");
+    const params = {
+      classroom: classRoom.marianatekID,
+      min_date: minDate,
+      max_date: minDate,
+      page_size: 50,
+      ordering: "start_datetime",
+    };
+    params.location = location.marianatekID;
+    classSessionsResponse = {
+      ...(await to(ClassSessionService.get(params))),
+    };
+    if (classSessionsResponse.error) {
+      setError(classSessionsResponse.error.message);
+      setLoading(false);
+      return;
+    }
+    if (classSessionsResponse.data) {
+      setClassSessions(classSessionsResponse.data);
+    }
+    setLoading(false);
+  };
+
+  // This effect refreshes the classroom data.
+  React.useEffect(() => {
+    fetchPickASpotData();
+  }, [classSessions]);
+
+  const getNextClassSession = () => {
+    //The class sessions are sorted by start time, so the first one that is greater
+    // than the current time is the one that should be used.
+    const currentTime = new Date();
+    const classSession = classSessions.find((classSession) => {
+      const startDateTime = new Date(classSession.startDateTime);
+      return startDateTime >= currentTime;
+    });
+    return classSession;
+  };
+
+  const fetchPickASpotData = async () => {
+    setLoading(true);
+    // Find next class session id first.
+    const classSession = getNextClassSession();
+    if (!classSession) {
+      // TODO, means it's the end of the day effectively.
+    }
+    const classSessionID = classSession.marianatekID;
+
+    // Get the pickASpotData
+    let pickASpotResponse = {
+      data: null,
+      error: null,
+    };
+    pickASpotResponse = {
+      ...(await to(PickASpotService.get(classSessionID))),
+    };
+    if (pickASpotResponse.error) {
+      setError(pickASpotResponse.error.message);
+      setLoading(false);
+      return;
+    }
+    if (pickASpotResponse.data) {
+      setPickASpotData(pickASpotResponse.data);
+    }
+    setLoading(false);
+  };
 
   //   // This effect refreshes the data every three hours.
   //   React.useEffect(() => {
@@ -59,6 +127,12 @@ export default function ClassAndAttendanceContainer(props) {
   //     }, THREE_HOURS);
   //     return () => clearInterval(interval);
   //   }, []);
+
+  const shouldShowClassAndAttendanceContainer = () => {
+    return (
+      !loading && classSessions && classSessions.length > 0 && pickASpotData
+    );
+  };
 
   return (
     <React.Fragment>
@@ -72,11 +146,18 @@ export default function ClassAndAttendanceContainer(props) {
           <CircularProgress color="inherit" size={100} />
         </div>
       )}
+      {shouldShowClassAndAttendanceContainer() && (
+        <div className={classNames(`${classAndAttendanceContainer}`)}>
+          <TimerCell startDateTime={pickASpotData.classSession.startDateTime} />
+          <ClassCell classSession={pickASpotData.classSession} />
+          <AttendanceContainer spots={pickASpotData.classSession.spots} />
+        </div>
+      )}
     </React.Fragment>
   );
 }
 
 ClassAndAttendanceContainer.propTypes = {
+  location: PropTypes.object,
   classRoom: PropTypes.object,
-  classSessions: PropTypes.arrayOf(PropTypes.object),
 };

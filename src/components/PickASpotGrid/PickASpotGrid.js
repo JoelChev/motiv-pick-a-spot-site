@@ -34,10 +34,7 @@ export default function PickaSpotGrid(props) {
   const [studioId, setStudioId] = React.useState(1);
   const [location, setLocation] = React.useState(null);
   const [classRooms, setClassRooms] = React.useState([]);
-  const [pickASpotData, setPickASpotData] = React.useState(null);
   const [error, setError] = React.useState(null);
-  const [classRoomClassSessionLists, setClassRoomClassSessionLists] =
-    React.useState(new Map());
 
   function _parseStudioId() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -129,52 +126,10 @@ export default function PickaSpotGrid(props) {
     setLoading(false);
   };
 
-  const fetchClassSessionData = async (classRoom) => {
-    // Get the classRooms
-    let classSessionsResponse = {
-      data: [],
-      error: null,
-    };
-
-    const curDate = new Date();
-    const minDate = curDate.toLocaleDateString("en-CA");
-    const params = {
-      classroom: classRoom.marianatekID,
-      min_date: minDate,
-      max_date: minDate,
-      page_size: 50,
-      ordering: "start_datetime",
-    };
-    params.location = location.marianatekID;
-    classSessionsResponse = {
-      ...(await to(ClassSessionService.get(params))),
-    };
-    if (classSessionsResponse.error) {
-      setError(classSessionsResponse.error.message);
-      setLoading(false);
-      return;
-    }
-    if (classSessionsResponse.data) {
-      classRoomClassSessionLists.set(classRoom.id, classSessionsResponse.data);
-    }
-  };
-
   // This effect refreshes the classroom data.
   React.useEffect(() => {
     fetchClassRoomData();
   }, [location]);
-
-  // This effect refreshes the class session data.
-  React.useEffect(() => {
-    const fetchClassSessionDataForClassrooms = async () => {
-      setLoading(true);
-      for (let classRoom of classRooms) {
-        await fetchClassSessionData(classRoom);
-      }
-      setLoading(false);
-    };
-    fetchClassSessionDataForClassrooms();
-  }, [classRooms]);
 
   // This effect refreshes the data every three hours.
   React.useEffect(() => {
@@ -190,14 +145,8 @@ export default function PickaSpotGrid(props) {
       focusDates &&
       focusDates.length > 6 &&
       classRooms &&
-      classRooms.length > 1 &&
-      classRoomClassSessionLists &&
-      classRoomClassSessionLists.size > 1
+      classRooms.length > 1
     );
-  };
-
-  const getClassSessionsForClassRoom = (classRoom) => {
-    return classRoomClassSessionLists.get(classRoom.id);
   };
 
   return (
@@ -212,12 +161,12 @@ export default function PickaSpotGrid(props) {
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
           <ClassAndAttendanceContainer
+            location={location}
             classRoom={classRooms[0]}
-            classSessions={getClassSessionsForClassRoom(classRooms[0])}
           />
           <ClassAndAttendanceContainer
+            location={location}
             classRoom={classRooms[1]}
-            classSessions={getClassSessionsForClassRoom(classRooms[1])}
           />
           <FocusScheduleRow
             focusDates={focusDates.slice(0, 6)}
