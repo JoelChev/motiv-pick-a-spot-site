@@ -1,10 +1,10 @@
 import "../../styles/main.scss";
-import FocusDateGrid from "../FocusDateGrid/FocusDateGrid";
+import PickaSpotGrid from "../PickASpotGrid/PickASpotGrid";
 
 function App() {
   return (
     <div className="App">
-      <FocusDateGrid />
+      <PickaSpotGrid />
     </div>
   );
 }

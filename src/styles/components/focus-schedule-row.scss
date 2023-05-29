@@ -1,0 +1,22 @@
+.focusScheduleRow {
+  display: flex;
+  flex-direction: column;
+  background: $color-dark-grey;
+  padding-left: 60px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  &__title-container {
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    color: $color-light-black;
+    font-size: 60px;
+    font-weight: bold;
+  }
+
+  &__dates-container {
+    display: flex;
+  }
+}
