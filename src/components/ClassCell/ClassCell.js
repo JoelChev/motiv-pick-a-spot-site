@@ -18,12 +18,16 @@ export default function ClassCell(props) {
 
   return (
     <div className={classNames(`${classCell}`)}>
-      <div>
-        <h2>{classSession.recurrenceClass.class.name}</h2>
-      </div>
-      <div>
-        <h2>{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
-      </div>
+      {classSession.recurrenceClass && (
+        <div>
+          <h2>{classSession.recurrenceClass.class.name}</h2>
+        </div>
+      )}
+      {classSession.recurrenceClass && (
+        <div>
+          <h2>{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
+        </div>
+      )}
       {classSession.instructor && (
         <div>
           <h2>{`With ${classSession.instructor.user.firstName}`}</h2>

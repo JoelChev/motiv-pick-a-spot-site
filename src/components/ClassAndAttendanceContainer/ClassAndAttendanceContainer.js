@@ -26,6 +26,7 @@ export default function ClassAndAttendanceContainer(props) {
 
   const [loading, setLoading] = React.useState(false);
   const [classSessions, setClassSessions] = React.useState([]);
+  const [tomorrowClassSessions, setTomorrowClassSessions] = React.useState([]);
   const [pickASpotData, setPickASpotData] = React.useState(null);
   const [error, setError] = React.useState(null);
 
@@ -42,6 +43,7 @@ export default function ClassAndAttendanceContainer(props) {
     };
 
     const curDate = new Date();
+
     const minDate = curDate.toLocaleDateString("en-CA");
     const params = {
       classroom: classRoom.marianatekID,
@@ -62,6 +64,30 @@ export default function ClassAndAttendanceContainer(props) {
     if (classSessionsResponse.data) {
       setClassSessions(classSessionsResponse.data);
     }
+    // Get tomorrow's class sessions as well.
+    const tomorrowDate = new Date(curDate);
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    const tomorrowMinDate = tomorrowDate.toLocaleDateString("en-CA");
+    const tomorrowParams = {
+      classroom: classRoom.marianatekID,
+      min_date: tomorrowMinDate,
+      max_date: tomorrowMinDate,
+      page_size: 50,
+      ordering: "start_datetime",
+    };
+    params.location = location.marianatekID;
+    classSessionsResponse = {
+      ...(await to(ClassSessionService.get(tomorrowParams))),
+    };
+    if (classSessionsResponse.error) {
+      setError(classSessionsResponse.error.message);
+      setLoading(false);
+      return;
+    }
+    if (classSessionsResponse.data) {
+      setTomorrowClassSessions(classSessionsResponse.data);
+    }
+
     setLoading(false);
   };
 
@@ -74,10 +100,18 @@ export default function ClassAndAttendanceContainer(props) {
     //The class sessions are sorted by start time, so the first one that is greater
     // than the current time is the one that should be used.
     const currentTime = new Date();
-    const classSession = classSessions.find((classSession) => {
+    let classSession;
+    classSession = classSessions.find((classSession) => {
       const startDateTime = new Date(classSession.startDateTime);
       return startDateTime >= currentTime;
     });
+    // If none are found for today, try iterating through tomorrow's next.
+    if (!classSession) {
+      classSession = tomorrowClassSessions.find((classSession) => {
+        const startDateTime = new Date(classSession.startDateTime);
+        return startDateTime >= currentTime;
+      });
+    }
     return classSession;
   };
 
@@ -86,6 +120,9 @@ export default function ClassAndAttendanceContainer(props) {
     // Find next class session id first.
     const classSession = getNextClassSession();
     if (!classSession) {
+      console.error("No class Session found!");
+      setLoading(false);
+      return;
       // TODO, means it's the end of the day effectively.
     }
     const classSessionID = classSession.marianatekID;

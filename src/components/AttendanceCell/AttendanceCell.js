@@ -24,7 +24,7 @@ export default function AttendanceCell(props) {
 
   return (
     <div className={classNames(`${attendanceCell}`)}>
-      <span>{spot.name}</span>
+      <span>{`${spot.name}. `}</span>
       {spot.user ? <span>{getUserName()}</span> : <span>Empty</span>}
     </div>
   );
