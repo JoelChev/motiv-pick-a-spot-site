@@ -1,0 +1,18 @@
+.attendanceCell {
+  margin: 8px 0;
+
+  &__spot-name {
+    font-size: 30px;
+    color: $color-light-black;
+  }
+
+  &__user-name {
+    font-size: 30px;
+    color: $color-light-black;
+  }
+
+  &__empty-name {
+    font-size: 30px;
+    color: $color-green-5;
+  }
+}

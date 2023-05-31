@@ -1,0 +1,64 @@
+.timerCell {
+  width: 33%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  padding-right: 20px;
+  border-radius: 16px;
+  background-color: white;
+
+  position: absolute;
+  top: -80px;
+  right: 100px;
+
+  &--selected {
+    opacity: 1;
+    z-index: 100;
+    transition: z-index 0.5s opacity 0.5s 0.5s;
+  }
+
+  &--not-selected {
+    opacity: 0;
+    z-index: 0;
+    transition: z-index 0.5s 0.5s, opacity 0.5s;
+  }
+
+  &--red {
+    background-color: $color-red;
+  }
+  &--yellow {
+    background-color: $color-yellow;
+  }
+
+  &__text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  &__text {
+    &--black {
+      font-size: 48px;
+      font-weight: bold;
+      color: $color-light-black;
+    }
+    &--white {
+      font-size: 48px;
+      font-weight: bold;
+      color: $color-white;
+    }
+  }
+
+  &__timer-text {
+    font-size: 56px;
+    color: $color-light-black;
+    font-weight: bold;
+  }
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+}

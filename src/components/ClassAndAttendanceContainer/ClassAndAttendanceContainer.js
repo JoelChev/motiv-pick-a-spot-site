@@ -22,7 +22,7 @@ const classAndAttendanceContainer = "classAndAttendanceContainer";
 let THREE_HOURS = 3 * 60 * 60 * 1000;
 
 export default function ClassAndAttendanceContainer(props) {
-  const { location, classRoom } = props;
+  const { location, classRoom, isSelected } = props;
 
   const [loading, setLoading] = React.useState(false);
   const [classSessions, setClassSessions] = React.useState([]);
@@ -94,7 +94,7 @@ export default function ClassAndAttendanceContainer(props) {
   // This effect refreshes the classroom data.
   React.useEffect(() => {
     fetchPickASpotData();
-  }, [classSessions]);
+  }, [classSessions, tomorrowClassSessions]);
 
   const getNextClassSession = () => {
     //The class sessions are sorted by start time, so the first one that is greater
@@ -120,7 +120,7 @@ export default function ClassAndAttendanceContainer(props) {
     // Find next class session id first.
     const classSession = getNextClassSession();
     if (!classSession) {
-      console.error("No class Session found!");
+      console.error("No class session found!");
       setLoading(false);
       return;
       // TODO, means it's the end of the day effectively.
@@ -156,7 +156,12 @@ export default function ClassAndAttendanceContainer(props) {
 
   const shouldShowClassAndAttendanceContainer = () => {
     return (
-      !loading && classSessions && classSessions.length > 0 && pickASpotData
+      !loading &&
+      classSessions &&
+      classSessions.length > 0 &&
+      tomorrowClassSessions &&
+      tomorrowClassSessions.length > 0 &&
+      pickASpotData
     );
   };
 
@@ -173,11 +178,23 @@ export default function ClassAndAttendanceContainer(props) {
         </div>
       )}
       {shouldShowClassAndAttendanceContainer() && (
-        <div className={classNames(`${classAndAttendanceContainer}`)}>
-          <TimerCell startDateTime={pickASpotData.classSession.startDateTime} />
-          <ClassCell classSession={pickASpotData.classSession} />
-          <AttendanceContainer spots={pickASpotData.classSession.spots} />
-        </div>
+        <React.Fragment>
+          <TimerCell
+            startDateTime={pickASpotData.classSession.startDateTime}
+            isSelected={isSelected}
+          />
+          <div
+            className={classNames(
+              `${classAndAttendanceContainer}`,
+              isSelected
+                ? `${classAndAttendanceContainer}--selected`
+                : `${classAndAttendanceContainer}--not-selected`
+            )}
+          >
+            <ClassCell classSession={pickASpotData.classSession} />
+            <AttendanceContainer spots={pickASpotData.classSession.spots} />
+          </div>
+        </React.Fragment>
       )}
     </React.Fragment>
   );
@@ -186,4 +203,5 @@ export default function ClassAndAttendanceContainer(props) {
 ClassAndAttendanceContainer.propTypes = {
   location: PropTypes.object,
   classRoom: PropTypes.object,
+  isSelected: PropTypes.bool,
 };

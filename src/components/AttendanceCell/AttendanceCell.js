@@ -1,13 +1,5 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { to } from "../../helpers";
-import {
-  Alert,
-  AlertTitle,
-  CircularProgress,
-  IconButton,
-  Collapse,
-} from "@mui/material";
 
 import classNames from "classnames";
 
@@ -24,8 +16,18 @@ export default function AttendanceCell(props) {
 
   return (
     <div className={classNames(`${attendanceCell}`)}>
-      <span>{`${spot.name}. `}</span>
-      {spot.user ? <span>{getUserName()}</span> : <span>Empty</span>}
+      <span
+        className={classNames(`${attendanceCell}__spot-name`)}
+      >{`${spot.name}. `}</span>
+      {spot.user ? (
+        <span className={classNames(`${attendanceCell}__user-name`)}>
+          {getUserName()}
+        </span>
+      ) : (
+        <span className={classNames(`${attendanceCell}__empty-name`)}>
+          Empty
+        </span>
+      )}
     </div>
   );
 }

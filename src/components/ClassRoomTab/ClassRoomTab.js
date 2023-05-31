@@ -1,13 +1,5 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { to } from "../../helpers";
-import {
-  Alert,
-  AlertTitle,
-  CircularProgress,
-  IconButton,
-  Collapse,
-} from "@mui/material";
 
 import classNames from "classnames";
 
@@ -29,8 +21,22 @@ export default function ClassRoomTab(props) {
   };
 
   return (
-    <div className={classNames(`${classRoomTab}`)}>
-      <h2>{getClassRoomTabName()}</h2>
+    <div
+      className={classNames(
+        `${classRoomTab}`,
+        isSelected
+          ? `${classRoomTab}--selected`
+          : `${classRoomTab}--not-selected`
+      )}
+    >
+      <h2
+        className={classNames(
+          `${classRoomTab}__title`,
+          isSelected ? `${classRoomTab}__title--selected` : ``
+        )}
+      >
+        {getClassRoomTabName()}
+      </h2>
     </div>
   );
 }

@@ -22,7 +22,26 @@ import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
 
 const pickASpotGrid = "pickASpotGrid";
 
+let THIRTY_SECONDS = 5 * 60 * 60;
+
 let THREE_HOURS = 3 * 60 * 60 * 1000;
+
+function useInterval(callback, delay) {
+  const savedCallback = React.useRef();
+
+  // Remember the latest callback.
+  React.useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  React.useEffect(() => {
+    let id = setInterval(() => {
+      savedCallback.current();
+    }, delay);
+    return () => clearInterval(id);
+  }, [delay]);
+}
 
 export default function PickaSpotGrid(props) {
   const [loading, setLoading] = React.useState(false);
@@ -30,6 +49,8 @@ export default function PickaSpotGrid(props) {
   const [studioId, setStudioId] = React.useState(1);
   const [location, setLocation] = React.useState(null);
   const [classRooms, setClassRooms] = React.useState([]);
+  const [selectedClassRoomTabIndex, setSelectedClassRoomTabIndex] =
+    React.useState(0);
   const [error, setError] = React.useState(null);
 
   function _parseStudioId() {
@@ -135,6 +156,11 @@ export default function PickaSpotGrid(props) {
     return () => clearInterval(interval);
   }, []);
 
+  // This effect changes the selected tab every 30 seconds.
+  useInterval(() => {
+    setSelectedClassRoomTabIndex(selectedClassRoomTabIndex + 1);
+  }, THIRTY_SECONDS);
+
   const shouldShowPickASpotGrid = () => {
     return (
       !loading &&
@@ -151,8 +177,8 @@ export default function PickaSpotGrid(props) {
       classRoomTabs.push(
         <ClassRoomTab
           key={`class-and-attendance-container-${index}`}
-          classRoom={classRooms[index]}
-          isSelected={index % 2 === 0}
+          classRoom={classRoom}
+          isSelected={index === selectedClassRoomTabIndex % 2}
         />
       );
     });
@@ -166,11 +192,31 @@ export default function PickaSpotGrid(props) {
         <ClassAndAttendanceContainer
           key={`class-and-attendance-container-${index}`}
           location={location}
-          classRoom={classRooms[index]}
+          classRoom={classRoom}
+          isSelected={index === selectedClassRoomTabIndex % 2}
         />
       );
     });
     return classAndAttendanceContainers;
+  };
+
+  const getFocusScheduleContainers = () => {
+    const focusScheduleContainers = [];
+    focusScheduleContainers.push(
+      <FocusScheduleRow
+        focusDates={focusDates.slice(0, 6)}
+        isFirst={true}
+        isSelected={0 === selectedClassRoomTabIndex % 2}
+      />
+    );
+    focusScheduleContainers.push(
+      <FocusScheduleRow
+        focusDates={focusDates.slice(6, focusDates.length)}
+        isFirst={false}
+        isSelected={1 === selectedClassRoomTabIndex % 2}
+      />
+    );
+    return focusScheduleContainers;
   };
 
   return (
@@ -184,16 +230,24 @@ export default function PickaSpotGrid(props) {
 
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
-          {getClassRoomTabs()}
-          {getClassAndAttendanceContainers()}
-          <FocusScheduleRow
-            focusDates={focusDates.slice(0, 6)}
-            isFirst={true}
-          />
-          <FocusScheduleRow
-            focusDates={focusDates.slice(6, focusDates.length)}
-            isFirst={false}
-          />
+          <div
+            className={classNames(`${pickASpotGrid}__classroom-tab-container`)}
+          >
+            {getClassRoomTabs()}
+          </div>
+          <div
+            className={classNames(
+              `${pickASpotGrid}__class-and-attendance-tab-container`
+            )}
+          >
+            {getClassAndAttendanceContainers()}
+          </div>
+
+          <div
+            className={classNames(`${pickASpotGrid}__focus-schedule-container`)}
+          >
+            {getFocusScheduleContainers()}
+          </div>
         </div>
       )}
     </React.Fragment>

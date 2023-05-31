@@ -3,8 +3,24 @@
   flex-direction: column;
   background: $color-dark-grey;
   padding-left: 60px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+
+  &--selected {
+    opacity: 1;
+    z-index: 100;
+    transition: z-index 0.5s opacity 0.5s 0.5s;
+  }
+
+  &--not-selected {
+    opacity: 0;
+    z-index: 0;
+    transition: z-index 0.5s 0.5s, opacity 0.5s;
+  }
 
   &__title-container {
     margin-bottom: 8px;

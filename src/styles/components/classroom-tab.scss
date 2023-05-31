@@ -1,0 +1,35 @@
+.classRoomTab {
+  width: 33%;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-of-type {
+    border-radius: 0 16px 0 0;
+  }
+  &:last-of-type {
+    border-radius: 16px 16px 0 0;
+  }
+
+  &--selected {
+    background-color: $color-green-1;
+  }
+
+  &--not-selected {
+    background-color: $color-green-5;
+  }
+
+  &__title {
+    font-size: 60px;
+    color: $color-light-black;
+    font-weight: bold;
+
+    &--selected {
+      text-decoration: underline;
+      text-decoration-color: $color-white;
+      text-decoration-thickness: 4px;
+      text-underline-position: under;
+    }
+  }
+}

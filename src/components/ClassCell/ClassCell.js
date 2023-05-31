@@ -1,13 +1,5 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { to } from "../../helpers";
-import {
-  Alert,
-  AlertTitle,
-  CircularProgress,
-  IconButton,
-  Collapse,
-} from "@mui/material";
 
 import classNames from "classnames";
 
@@ -19,18 +11,30 @@ export default function ClassCell(props) {
   return (
     <div className={classNames(`${classCell}`)}>
       {classSession.recurrenceClass && (
-        <div>
-          <h2>{classSession.recurrenceClass.class.name}</h2>
+        <div className={classNames(`${classCell}__title-container`)}>
+          <h2 className={classNames(`${classCell}__title`)}>
+            {classSession.recurrenceClass.class.name}
+          </h2>
         </div>
       )}
       {classSession.recurrenceClass && (
-        <div>
-          <h2>{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
+        <div className={classNames(`${classCell}__type-difficulty-container`)}>
+          <h2
+            className={classNames(`${classCell}__type-difficulty`)}
+          >{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
         </div>
       )}
-      {classSession.instructor && (
-        <div>
-          <h2>{`With ${classSession.instructor.user.firstName}`}</h2>
+      {classSession.instructor ? (
+        <div className={classNames(`${classCell}__instructor-container`)}>
+          <h2
+            className={classNames(`${classCell}__instructor`)}
+          >{`With ${classSession.instructor.user.firstName}`}</h2>
+        </div>
+      ) : (
+        <div className={classNames(`${classCell}__instructor-container`)}>
+          <h2 className={classNames(`${classCell}__instructor`)}>
+            <React.Fragment>&nbsp;</React.Fragment>
+          </h2>
         </div>
       )}
     </div>
