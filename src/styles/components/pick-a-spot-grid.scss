@@ -2,7 +2,6 @@
   background: $color-green-1;
   display: flex;
   flex-direction: column;
-
   &__loading-container {
     position: absolute;
     top: 50%;
@@ -28,6 +27,10 @@
   }
 
   &__alert-container {
+    position: absolute;
     width: 600px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

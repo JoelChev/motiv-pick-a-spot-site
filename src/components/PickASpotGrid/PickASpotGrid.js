@@ -45,6 +45,8 @@ function useInterval(callback, delay) {
 
 export default function PickaSpotGrid(props) {
   const [loading, setLoading] = React.useState(false);
+  const [attendanceDataLoading, setAttendanceDataLoading] =
+    React.useState(false);
   const [focusDates, setFocusDates] = React.useState(null);
   const [studioId, setStudioId] = React.useState(1);
   const [location, setLocation] = React.useState(null);
@@ -78,7 +80,11 @@ export default function PickaSpotGrid(props) {
       ...(await to(LocationService.getOne(studioId))),
     };
     if (locationResponse.error) {
-      setError(locationResponse.error.message);
+      if (locationResponse.error.message) {
+        setError(locationResponse.error.message);
+      } else {
+        setError(true);
+      }
       setLoading(false);
       return;
     }
@@ -105,7 +111,11 @@ export default function PickaSpotGrid(props) {
       )),
     };
     if (focusDateResponse.error) {
-      setError(focusDateResponse.error.message);
+      if (focusDateResponse.error.message) {
+        setError(focusDateResponse.error.message);
+      } else {
+        setError(true);
+      }
       setLoading(false);
       return;
     }
@@ -133,7 +143,12 @@ export default function PickaSpotGrid(props) {
       ...(await to(ClassRoomService.get(params))),
     };
     if (classRoomsResponse.error) {
-      setError(classRoomsResponse.error.message);
+      if (classRoomsResponse.error.message) {
+        setError(classRoomsResponse.error.message);
+      } else {
+        setError(true);
+      }
+
       setLoading(false);
       return;
     }
@@ -194,6 +209,9 @@ export default function PickaSpotGrid(props) {
           location={location}
           classRoom={classRoom}
           isSelected={index === selectedClassRoomTabIndex % 2}
+          setError={setError}
+          loading={attendanceDataLoading}
+          setLoading={setAttendanceDataLoading}
         />
       );
     });
@@ -204,6 +222,7 @@ export default function PickaSpotGrid(props) {
     const focusScheduleContainers = [];
     focusScheduleContainers.push(
       <FocusScheduleRow
+        key={`focus-schedule-row-0`}
         focusDates={focusDates.slice(0, 6)}
         isFirst={true}
         isSelected={0 === selectedClassRoomTabIndex % 2}
@@ -211,6 +230,7 @@ export default function PickaSpotGrid(props) {
     );
     focusScheduleContainers.push(
       <FocusScheduleRow
+        key={`focus-schedule-row-1`}
         focusDates={focusDates.slice(6, focusDates.length)}
         isFirst={false}
         isSelected={1 === selectedClassRoomTabIndex % 2}
@@ -221,12 +241,13 @@ export default function PickaSpotGrid(props) {
 
   return (
     <React.Fragment>
-      {loading && (
-        <div className={classNames(`${pickASpotGrid}__loading-container`)}>
-          {" "}
-          <CircularProgress color="inherit" size={100} />
-        </div>
-      )}
+      {loading ||
+        (attendanceDataLoading && (
+          <div className={classNames(`${pickASpotGrid}__loading-container`)}>
+            {" "}
+            <CircularProgress color="inherit" size={100} />
+          </div>
+        ))}
 
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
@@ -248,6 +269,31 @@ export default function PickaSpotGrid(props) {
           >
             {getFocusScheduleContainers()}
           </div>
+        </div>
+      )}
+      {error && (
+        <div className={classNames(`${pickASpotGrid}__alert-container`)}>
+          <Collapse in={error}>
+            <Alert
+              severity="error"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setError(null);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {error}
+            </Alert>
+          </Collapse>
         </div>
       )}
     </React.Fragment>

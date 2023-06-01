@@ -1,14 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { to } from "../../helpers";
-import {
-  Alert,
-  AlertTitle,
-  CircularProgress,
-  IconButton,
-  Collapse,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 
 import classNames from "classnames";
 
@@ -21,14 +13,15 @@ const classAndAttendanceContainer = "classAndAttendanceContainer";
 
 let THREE_HOURS = 3 * 60 * 60 * 1000;
 
-export default function ClassAndAttendanceContainer(props) {
-  const { location, classRoom, isSelected } = props;
+let FIFTEEN_MINUTES = 15 * 60 * 1000;
 
-  const [loading, setLoading] = React.useState(false);
+export default function ClassAndAttendanceContainer(props) {
+  const { location, classRoom, isSelected, setError, loading, setLoading } =
+    props;
+
   const [classSessions, setClassSessions] = React.useState([]);
   const [tomorrowClassSessions, setTomorrowClassSessions] = React.useState([]);
   const [pickASpotData, setPickASpotData] = React.useState(null);
-  const [error, setError] = React.useState(null);
 
   //This effect refreshes the pick a spot data.
   React.useEffect(() => {
@@ -100,16 +93,21 @@ export default function ClassAndAttendanceContainer(props) {
     //The class sessions are sorted by start time, so the first one that is greater
     // than the current time is the one that should be used.
     const currentTime = new Date();
+    const fifteenMinutesInThePast = new Date(
+      currentTime.getTime() - FIFTEEN_MINUTES
+    );
     let classSession;
     classSession = classSessions.find((classSession) => {
       const startDateTime = new Date(classSession.startDateTime);
-      return startDateTime >= currentTime;
+      // Use the current class session up to 15 minutes after it has started.
+      return startDateTime >= fifteenMinutesInThePast;
     });
     // If none are found for today, try iterating through tomorrow's next.
     if (!classSession) {
       classSession = tomorrowClassSessions.find((classSession) => {
         const startDateTime = new Date(classSession.startDateTime);
-        return startDateTime >= currentTime;
+        // Use the current class session up to 15 minutes after it has started.
+        return startDateTime >= fifteenMinutesInThePast;
       });
     }
     return classSession;
@@ -146,13 +144,22 @@ export default function ClassAndAttendanceContainer(props) {
     setLoading(false);
   };
 
-  //   // This effect refreshes the data every three hours.
-  //   React.useEffect(() => {
-  //     const interval = setInterval(() => {
-  //       fetchLocationAndDailyFocusData();
-  //     }, THREE_HOURS);
-  //     return () => clearInterval(interval);
-  //   }, []);
+  // This effect refreshes the class session data every 3 hours.
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      fetchClassSessionData();
+    }, THREE_HOURS);
+    return () => clearInterval(interval);
+  }, []);
+
+  // This effect refreshes the pick a spot data every 15 minutes.
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      fetchPickASpotData();
+    }, FIFTEEN_MINUTES);
+    return () => clearInterval(interval);
+  }, []);
 
   const shouldShowClassAndAttendanceContainer = () => {
     return (
@@ -167,16 +174,6 @@ export default function ClassAndAttendanceContainer(props) {
 
   return (
     <React.Fragment>
-      {loading && (
-        <div
-          className={classNames(
-            `${classAndAttendanceContainer}__loading-container`
-          )}
-        >
-          {" "}
-          <CircularProgress color="inherit" size={100} />
-        </div>
-      )}
       {shouldShowClassAndAttendanceContainer() && (
         <React.Fragment>
           <TimerCell
@@ -204,4 +201,7 @@ ClassAndAttendanceContainer.propTypes = {
   location: PropTypes.object,
   classRoom: PropTypes.object,
   isSelected: PropTypes.bool,
+  setError: PropTypes.func,
+  loading: PropTypes.bool,
+  setLoading: PropTypes.func,
 };
