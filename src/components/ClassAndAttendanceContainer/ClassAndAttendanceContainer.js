@@ -29,6 +29,9 @@ export default function ClassAndAttendanceContainer(props) {
   }, []);
 
   const fetchClassSessionData = async () => {
+    setLoading(true);
+    setClassSessions([]);
+    setTomorrowClassSessions([]);
     // Get the class sessions
     let classSessionsResponse = {
       data: [],
@@ -86,7 +89,14 @@ export default function ClassAndAttendanceContainer(props) {
 
   // This effect refreshes the classroom data.
   React.useEffect(() => {
-    fetchPickASpotData();
+    if (
+      classSessions &&
+      classSessions.length > 0 &&
+      tomorrowClassSessions &&
+      tomorrowClassSessions.length > 0
+    ) {
+      fetchPickASpotData();
+    }
   }, [classSessions, tomorrowClassSessions]);
 
   const getNextClassSession = () => {
@@ -115,13 +125,14 @@ export default function ClassAndAttendanceContainer(props) {
 
   const fetchPickASpotData = async () => {
     setLoading(true);
+    setPickASpotData(null);
     // Find next class session id first.
     const classSession = getNextClassSession();
     if (!classSession) {
+      // This should theoretically never happen since we are pulling into tomorrow, but should be careful all the same.
       console.error("No class session found!");
       setLoading(false);
       return;
-      // TODO, means it's the end of the day effectively.
     }
     const classSessionID = classSession.marianatekID;
 
