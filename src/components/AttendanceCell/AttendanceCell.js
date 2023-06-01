@@ -15,7 +15,13 @@ export default function AttendanceCell(props) {
   };
 
   return (
-    <div className={classNames(`${attendanceCell}`)}>
+    <div
+      className={classNames(
+        `${attendanceCell}`,
+        // Need to shift left the one marked 10 because it is in a column with single digits.
+        spot.name === "10" ? `${attendanceCell}--left` : ``
+      )}
+    >
       <span
         className={classNames(`${attendanceCell}__spot-name`)}
       >{`${spot.name}. `}</span>

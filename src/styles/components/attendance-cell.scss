@@ -1,6 +1,10 @@
 .attendanceCell {
   margin: 12px 0;
 
+  &--left {
+    margin-left: -18px;
+  }
+
   &__spot-name {
     font-size: 36px;
     color: $color-light-black;
