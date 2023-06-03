@@ -69,7 +69,9 @@ export default function TimerCell(props) {
         `${timerCell}`,
         isSelected ? `${timerCell}--selected` : `${timerCell}--not-selected`,
         classHasStarted() ? `${timerCell}--red` : ``,
-        isLessThanOneMinute() ? `${timerCell}--yellow` : ``
+        isLessThanOneMinute() && !classHasStarted()
+          ? `${timerCell}--yellow`
+          : ``
       )}
     >
       {classHasStarted() ? (
