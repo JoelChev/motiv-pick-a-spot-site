@@ -15,6 +15,8 @@ let THREE_HOURS = 3 * 60 * 60 * 1000;
 
 let FIFTEEN_MINUTES = 15 * 60 * 1000;
 
+let ONE_MINUTE = 60 * 1000;
+
 export default function ClassAndAttendanceContainer(props) {
   const { location, classRoom, isSelected, setError, loading, setLoading } =
     props;
@@ -99,6 +101,19 @@ export default function ClassAndAttendanceContainer(props) {
     }
   }, [classSessions, tomorrowClassSessions]);
 
+  const isNewClassSession = ({ potentialNewClassSession }) => {
+    // See if the class session in state is an actual new class session.
+    if (pickASpotData && potentialNewClassSession) {
+      const { classSession } = pickASpotData;
+      return classSession.marianatekID != potentialNewClassSession.marianatekID;
+    }
+    // This is the initial state, it will be a new class session in this case always.
+    if (!pickASpotData && potentialNewClassSession) {
+      return true;
+    }
+    return false;
+  };
+
   const getNextClassSession = () => {
     //The class sessions are sorted by start time, so the first one that is greater
     // than the current time is the one that should be used.
@@ -123,17 +138,9 @@ export default function ClassAndAttendanceContainer(props) {
     return classSession;
   };
 
-  const fetchPickASpotData = async () => {
+  const loadNewPickASpotData = async (classSession) => {
     setLoading(true);
     setPickASpotData(null);
-    // Find next class session id first.
-    const classSession = getNextClassSession();
-    if (!classSession) {
-      // This should theoretically never happen since we are pulling into tomorrow, but should be careful all the same.
-      console.error("No class session found!");
-      setLoading(false);
-      return;
-    }
     const classSessionID = classSession.marianatekID;
 
     // Get the pickASpotData
@@ -155,6 +162,21 @@ export default function ClassAndAttendanceContainer(props) {
     setLoading(false);
   };
 
+  const fetchPickASpotData = async () => {
+    // Get the next class session.
+    const classSession = getNextClassSession();
+    if (!classSession) {
+      // This should theoretically never happen since we are pulling into tomorrow, but should be careful all the same.
+      console.error("No class session found!");
+      setError("No class session found!");
+      return;
+    }
+    // Then check if it is in fact a new class session before loading it up.
+    if (isNewClassSession({ potentialNewClassSession: classSession })) {
+      await loadNewPickASpotData(classSession);
+    }
+  };
+
   // This effect refreshes the class session data every 3 hours.
 
   React.useEffect(() => {
@@ -164,11 +186,12 @@ export default function ClassAndAttendanceContainer(props) {
     return () => clearInterval(interval);
   }, []);
 
-  // This effect refreshes the pick a spot data every 15 minutes.
+  // This effect attempts to refresh the pick a spot data every minute, but will only change
+  // state when it's passed the 15 minute threshold.
   React.useEffect(() => {
     const interval = setInterval(() => {
       fetchPickASpotData();
-    }, FIFTEEN_MINUTES);
+    }, ONE_MINUTE);
     return () => clearInterval(interval);
   }, []);
 

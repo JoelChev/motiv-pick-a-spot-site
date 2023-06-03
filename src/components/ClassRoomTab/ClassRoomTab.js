@@ -11,10 +11,6 @@ export default function ClassRoomTab(props) {
   const getClassRoomTabName = () => {
     if (classRoom && classRoom.Televisions && classRoom.Televisions.length) {
       const classRoomTabNameRaw = classRoom.Televisions[0].name;
-      // We only want InstructorLess, not the full thing.
-      if (classRoomTabNameRaw.includes("Instructor")) {
-        return classRoomTabNameRaw.split(" ")[0].toUpperCase();
-      }
       return classRoomTabNameRaw.toUpperCase();
     }
     return "";
