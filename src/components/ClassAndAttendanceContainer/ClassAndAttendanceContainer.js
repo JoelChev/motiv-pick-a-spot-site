@@ -11,8 +11,6 @@ import TimerCell from "../TimerCell/TimerCell";
 
 const classAndAttendanceContainer = "classAndAttendanceContainer";
 
-let THREE_HOURS = 3 * 60 * 60 * 1000;
-
 let FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 let ONE_MINUTE = 60 * 1000;
@@ -181,12 +179,12 @@ export default function ClassAndAttendanceContainer(props) {
     }
   };
 
-  // This effect refreshes the class session data every 3 hours.
+  // This effect refreshes the class session data every 15 minutes.
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       fetchClassSessionData();
-    }, THREE_HOURS);
+    }, FIFTEEN_MINUTES);
     return () => clearInterval(interval);
   }, []);
 
