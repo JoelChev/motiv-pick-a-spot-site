@@ -103,7 +103,9 @@ export default function ClassAndAttendanceContainer(props) {
     // See if the class session in state is an actual new class session.
     if (pickASpotData && potentialNewClassSession) {
       const { classSession } = pickASpotData;
-      return classSession.marianatekID != potentialNewClassSession.marianatekID;
+      return (
+        classSession.marianatekID !== potentialNewClassSession.marianatekID
+      );
     }
     // This is the initial state, it will be a new class session in this case always.
     if (!pickASpotData && potentialNewClassSession) {
