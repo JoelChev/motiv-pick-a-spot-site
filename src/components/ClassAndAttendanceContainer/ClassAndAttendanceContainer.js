@@ -163,6 +163,10 @@ export default function ClassAndAttendanceContainer(props) {
   };
 
   const fetchPickASpotData = async () => {
+    // If the classSessions and tomorrowClassSessions are reset ensure that they are populated first.
+    if (classSessions.length === 0 || tomorrowClassSessions.length === 0) {
+      return;
+    }
     // Get the next class session.
     const classSession = getNextClassSession();
     if (!classSession) {
