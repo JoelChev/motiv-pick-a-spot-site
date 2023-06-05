@@ -13,7 +13,7 @@ const classAndAttendanceContainer = "classAndAttendanceContainer";
 
 let FIFTEEN_MINUTES = 15 * 60 * 1000;
 
-let ONE_MINUTE = 60 * 1000;
+let FIVE_MINUTES = 5 * 60 * 1000;
 
 export default function ClassAndAttendanceContainer(props) {
   const { location, classRoom, isSelected, setError, loading, setLoading } =
@@ -32,6 +32,7 @@ export default function ClassAndAttendanceContainer(props) {
     setLoading(true);
     setClassSessions([]);
     setTomorrowClassSessions([]);
+    setPickASpotData(null);
     // Get the class sessions
     let classSessionsResponse = {
       data: [],
@@ -190,12 +191,12 @@ export default function ClassAndAttendanceContainer(props) {
     return () => clearInterval(interval);
   }, []);
 
-  // This effect attempts to refresh the pick a spot data every minute, but will only change
+  // This effect attempts to refresh the pick a spot data every 5 minutes, but will only change
   // state when it's passed the 15 minute threshold.
   React.useEffect(() => {
     const interval = setInterval(() => {
       fetchPickASpotData();
-    }, ONE_MINUTE);
+    }, FIVE_MINUTES);
     return () => clearInterval(interval);
   }, []);
 
