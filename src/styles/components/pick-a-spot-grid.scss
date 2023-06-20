@@ -1,7 +1,6 @@
 .pickASpotGrid {
   background: $color-green-1;
   display: flex;
-  flex-direction: column;
   &__loading-container {
     position: absolute;
     top: 50%;
@@ -15,15 +14,14 @@
   }
 
   &__class-and-attendance-tab-container {
-    position: relative;
-    height: 500px;
+    height: 90%;
+    min-height: 90%;
     display: flex;
-    width: 100%;
-    margin-left: 64px;
-  }
-
-  &__focus-schedule-container {
-    width: 100%;
+    flex-direction: column;
+    width: 80%;
+    align-items: stretch;
+    justify-content: stretch;
+    flex: 1;
   }
 
   &__alert-container {

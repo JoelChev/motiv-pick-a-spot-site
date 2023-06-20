@@ -18,8 +18,7 @@ let TEN_MINUTES = 10 * 60 * 1000;
 let THREE_MINUTES = 3 * 60 * 1000;
 
 export default function ClassAndAttendanceContainer(props) {
-  const { location, classRoom, isSelected, setError, loading, setLoading } =
-    props;
+  const { location, classRoom, setError, loading, setLoading, isFirst } = props;
 
   const [classSessions, setClassSessions] = React.useState([]);
   const [tomorrowClassSessions, setTomorrowClassSessions] = React.useState([]);
@@ -217,16 +216,16 @@ export default function ClassAndAttendanceContainer(props) {
     <React.Fragment>
       {shouldShowClassAndAttendanceContainer() && (
         <React.Fragment>
-          <TimerCell
+          {/* <TimerCell
             startDateTime={pickASpotData.classSession.startDateTime}
             isSelected={isSelected}
-          />
+          /> */}
           <div
             className={classNames(
               `${classAndAttendanceContainer}`,
-              isSelected
-                ? `${classAndAttendanceContainer}--selected`
-                : `${classAndAttendanceContainer}--not-selected`
+              isFirst
+                ? `${classAndAttendanceContainer}--first`
+                : `${classAndAttendanceContainer}--second`
             )}
           >
             <ClassCell classSession={pickASpotData.classSession} />
@@ -241,8 +240,8 @@ export default function ClassAndAttendanceContainer(props) {
 ClassAndAttendanceContainer.propTypes = {
   location: PropTypes.object,
   classRoom: PropTypes.object,
-  isSelected: PropTypes.bool,
   setError: PropTypes.func,
   loading: PropTypes.bool,
   setLoading: PropTypes.func,
+  isFirst: PropTypes.bool,
 };

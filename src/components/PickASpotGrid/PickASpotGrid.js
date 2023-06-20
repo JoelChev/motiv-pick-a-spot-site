@@ -208,10 +208,10 @@ export default function PickaSpotGrid(props) {
           key={`class-and-attendance-container-${index}`}
           location={location}
           classRoom={classRoom}
-          isSelected={index === selectedClassRoomTabIndex % 2}
           setError={setError}
           loading={attendanceDataLoading}
           setLoading={setAttendanceDataLoading}
+          isFirst={index === 0}
         />
       );
     });
@@ -234,14 +234,14 @@ export default function PickaSpotGrid(props) {
             className={classNames(`${pickASpotGrid}__classroom-tab-container`)}
           >
             {getClassRoomTabs()}
-          </div>
+          </div> */}
           <div
             className={classNames(
               `${pickASpotGrid}__class-and-attendance-tab-container`
             )}
           >
             {getClassAndAttendanceContainers()}
-          </div> */}
+          </div>
 
           <div
             className={classNames(`${pickASpotGrid}__focus-schedule-container`)}

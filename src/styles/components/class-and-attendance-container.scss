@@ -1,20 +1,20 @@
 .classAndAttendanceContainer {
   display: flex;
-  flex-direction: column;
-  height: 30%;
-  position: absolute;
-  margin-top: 60px;
+  height: 50%;
+  min-height: 50%;
   width: 100%;
+  padding: 32px;
+  align-self: stretch;
+  justify-content: stretch;
+  flex: 1;
+  margin-top: 0;
+  margin-bottom: 0;
 
-  &--selected {
-    opacity: 1;
-    z-index: 100;
-    transition: z-index 0.5s opacity 0.5s 0.5s;
+  &--first {
+    background-color: $color-green-1;
   }
 
-  &--not-selected {
-    opacity: 0;
-    z-index: 0;
-    transition: z-index 0.5s 0.5s, opacity 0.5s;
+  &--second {
+    background-color: $color-light-grey;
   }
 }
