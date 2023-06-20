@@ -14,10 +14,10 @@ import PropTypes from "prop-types";
 
 import classNames from "classnames";
 
-const focusScheduleRow = "focusScheduleRow";
+const focusScheduleColumn = "focusScheduleColumn";
 
-export default function FocusScheduleRow(props) {
-  const { focusDates, isSelected, isFirst } = props;
+export default function FocusScheduleColumn(props) {
+  const { focusDates } = props;
 
   const getDateCells = () => {
     const focusDateComponents = [];
@@ -30,7 +30,6 @@ export default function FocusScheduleRow(props) {
             key={`focus-${i}`}
             focusName={focusName}
             focusDate={focusDate}
-            isFirst={isFirst}
           />
         );
       }
@@ -40,20 +39,13 @@ export default function FocusScheduleRow(props) {
 
   return (
     <React.Fragment>
-      <div
-        className={classNames(
-          `${focusScheduleRow}`,
-          isSelected
-            ? `${focusScheduleRow}--selected`
-            : `${focusScheduleRow}--not-selected`
-        )}
-      >
-        <div className={classNames(`${focusScheduleRow}__title-container`)}>
-          <h2 className={classNames(`${focusScheduleRow}__title`)}>
+      <div className={classNames(`${focusScheduleColumn}`)}>
+        <div className={classNames(`${focusScheduleColumn}__title-container`)}>
+          <h2 className={classNames(`${focusScheduleColumn}__title`)}>
             FOCUS SCHEDULE
           </h2>
         </div>
-        <div className={classNames(`${focusScheduleRow}__dates-container`)}>
+        <div className={classNames(`${focusScheduleColumn}__dates-container`)}>
           {getDateCells()}
         </div>
       </div>
@@ -61,8 +53,6 @@ export default function FocusScheduleRow(props) {
   );
 }
 
-FocusScheduleRow.propTypes = {
+FocusScheduleColumn.propTypes = {
   focusDates: PropTypes.arrayOf(PropTypes.object),
-  isShown: PropTypes.bool,
-  isFirst: PropTypes.bool,
 };

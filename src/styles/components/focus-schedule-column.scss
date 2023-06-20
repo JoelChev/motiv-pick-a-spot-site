@@ -1,0 +1,32 @@
+.focusScheduleColumn {
+  display: flex;
+  flex-direction: column;
+  background: $color-light-black;
+  padding: 24px;
+
+  position: absolute;
+  width: 20%;
+  height: 100%;
+  right: 0;
+
+  &__title-container {
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__title {
+    color: $color-white;
+    font-size: 32px;
+    font-weight: bold;
+    text-underline-position: under;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  &__dates-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

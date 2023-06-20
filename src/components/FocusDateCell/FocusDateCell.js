@@ -13,7 +13,6 @@ function formatDateString(focusDate) {
   } else {
     const focusDateString = focusDate
       .toLocaleDateString("en-CA", {
-        weekday: "short",
         month: "short",
         day: "numeric",
       })
@@ -32,18 +31,11 @@ function formatDateString(focusDate) {
 }
 
 export default function FocusDateCell(props) {
-  const { focusName, focusDate, isFirst } = props;
+  const { focusName, focusDate } = props;
 
   const isToday = () => {
     const today = new Date();
     return formatDateString(today) === formatDateString(focusDate);
-  };
-
-  const isTomorrow = () => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return formatDateString(tomorrow) === formatDateString(focusDate);
   };
 
   // Display the right title based on the day.
@@ -53,12 +45,8 @@ export default function FocusDateCell(props) {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const formattedDateString = formatDateString(focusDate);
     const isToday = formatDateString(today) === formattedDateString;
-    const isTomorrow = formatDateString(tomorrow) === formattedDateString;
     if (isToday) {
       return "TODAY";
-    }
-    if (isTomorrow) {
-      return "TOMORROW";
     }
     return formattedDateString;
   };
@@ -67,26 +55,19 @@ export default function FocusDateCell(props) {
     <div
       className={classNames(
         `${focusDateCell}`,
-        isToday() ? `${focusDateCell}--today` : ``,
-        isTomorrow() ? `${focusDateCell}--tomorrow` : ``
+        isToday() ? `${focusDateCell}--today` : ``
       )}
     >
       <div
         className={classNames(
           `${focusDateCell}__focus-date-container`,
-          isToday() ? `${focusDateCell}__focus-date-container--today` : ``,
-          isTomorrow()
-            ? `${focusDateCell}__focus-date-container--tomorrow`
-            : ``,
-          isFirst ? `${focusDateCell}__focus-date-container--first` : ``
+          isToday() ? `${focusDateCell}__focus-date-container--today` : ``
         )}
       >
         <h3
           className={classNames(
             `${focusDateCell}__focus-date`,
-            isToday() ? `${focusDateCell}__focus-date--today` : ``,
-            isTomorrow() ? `${focusDateCell}__focus-date--tomorrow` : ``,
-            isFirst ? `${focusDateCell}__focus-date--first` : ``
+            isToday() ? `${focusDateCell}__focus-date--today` : ``
           )}
         >
           {getDateString()}
@@ -95,18 +76,13 @@ export default function FocusDateCell(props) {
       <div
         className={classNames(
           `${focusDateCell}__focus-name-container`,
-          isToday() ? `${focusDateCell}__focus-name-container--today` : ``,
-          isTomorrow()
-            ? `${focusDateCell}__focus-name-container--tomorrow`
-            : ``,
-          isFirst ? `${focusDateCell}__focus-name-container--first` : ``
+          isToday() ? `${focusDateCell}__focus-name-container--today` : ``
         )}
       >
         <h3
           className={classNames(
             `${focusDateCell}__focus-name`,
-            isToday() ? `${focusDateCell}__focus-name--today` : ``,
-            isTomorrow() ? `${focusDateCell}__focus-name--tomorrow` : ``
+            isToday() ? `${focusDateCell}__focus-name--today` : ``
           )}
         >
           {focusName.toUpperCase()}
@@ -119,5 +95,4 @@ export default function FocusDateCell(props) {
 FocusDateCell.propTypes = {
   focusName: PropTypes.string,
   focusDate: PropTypes.instanceOf(Date),
-  isFirst: PropTypes.bool,
 };

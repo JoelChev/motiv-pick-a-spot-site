@@ -1,87 +1,40 @@
 .focusDateCell {
-  width: 11%;
-  margin-right: 12px;
-
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 28px;
+  width: 100%;
   &--today {
-    width: 16%;
-    margin-right: 48px;
-  }
-
-  &--tomorrow {
-    width: 14%;
-    margin-right: 36px;
+    margin-bottom: 36px;
   }
 
   &__focus-date-container {
-    background: $color-light-black;
-    padding: 18px 24px 8px;
-    border-radius: 16px 16px 0 0;
-    text-align: center;
-
-    &--today {
-      background: $color-white;
-      border: $color-green-1 1px solid;
-    }
-    &--tomorrow {
-      background: $color-white;
-      border: $color-green-1 1px solid;
-    }
-    &--first {
-      border: $color-green-1 1px solid;
-    }
+    width: 50%;
   }
 
   &__focus-date {
-    color: $color-white;
-    font-size: 24px;
+    color: $color-green-1;
+    font-size: 28px;
     font-weight: 900;
-
+    margin-right: 32px;
+    text-align: right;
     &--today {
-      color: $color-green-1;
-    }
-    &--tomorrow {
-      color: $color-green-1;
-    }
-    &--first {
-      color: $color-green-1;
+      font-size: 32px;
     }
   }
 
   &__focus-name-container {
-    background: $color-light-grey;
-    padding: 24px 0px 16px;
-    text-align: center;
-
-    &--today {
-      border-left: $color-green-1 1px solid;
-      border-right: $color-green-1 1px solid;
-      border-bottom: $color-green-1 1px solid;
-      padding: 20px 0 12px;
-    }
-    &--tomorrow {
-      border-left: $color-green-1 1px solid;
-      border-right: $color-green-1 1px solid;
-      border-bottom: $color-green-1 1px solid;
-      padding: 20px 0 12px;
-    }
-    &--first {
-      border-left: $color-green-1 1px solid;
-      border-right: $color-green-1 1px solid;
-      border-bottom: $color-green-1 1px solid;
-    }
+    width: 50%;
   }
 
   &__focus-name {
-    color: $color-light-black;
-    font-size: 24px;
+    color: $color-white;
+    font-size: 28px;
     font-weight: 600;
     word-wrap: break-word;
 
     &--today {
-      font-size: 28px;
-    }
-    &--tomorrow {
-      font-size: 28px;
+      font-size: 32px;
     }
   }
 }

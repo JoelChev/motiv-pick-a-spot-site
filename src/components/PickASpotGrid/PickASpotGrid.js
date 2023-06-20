@@ -17,7 +17,7 @@ import {
   ClassRoomService,
 } from "../../services";
 import ClassAndAttendanceContainer from "../ClassAndAttendanceContainer/ClassAndAttendanceContainer";
-import FocusScheduleRow from "../FocusScheduleRow/FocusScheduleRow";
+import FocusScheduleColumn from "../FocusScheduleColumn/FocusScheduleColumn";
 import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
 
 const pickASpotGrid = "pickASpotGrid";
@@ -218,27 +218,6 @@ export default function PickaSpotGrid(props) {
     return classAndAttendanceContainers;
   };
 
-  const getFocusScheduleContainers = () => {
-    const focusScheduleContainers = [];
-    focusScheduleContainers.push(
-      <FocusScheduleRow
-        key={`focus-schedule-row-0`}
-        focusDates={focusDates.slice(0, 6)}
-        isFirst={true}
-        isSelected={0 === selectedClassRoomTabIndex % 2}
-      />
-    );
-    focusScheduleContainers.push(
-      <FocusScheduleRow
-        key={`focus-schedule-row-1`}
-        focusDates={focusDates.slice(6, focusDates.length)}
-        isFirst={false}
-        isSelected={1 === selectedClassRoomTabIndex % 2}
-      />
-    );
-    return focusScheduleContainers;
-  };
-
   return (
     <React.Fragment>
       {loading ||
@@ -251,7 +230,7 @@ export default function PickaSpotGrid(props) {
 
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
-          <div
+          {/* <div
             className={classNames(`${pickASpotGrid}__classroom-tab-container`)}
           >
             {getClassRoomTabs()}
@@ -262,12 +241,12 @@ export default function PickaSpotGrid(props) {
             )}
           >
             {getClassAndAttendanceContainers()}
-          </div>
+          </div> */}
 
           <div
             className={classNames(`${pickASpotGrid}__focus-schedule-container`)}
           >
-            {getFocusScheduleContainers()}
+            <FocusScheduleColumn focusDates={focusDates} />
           </div>
         </div>
       )}
