@@ -2,9 +2,14 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 40px;
+  padding-left: 8px;
+  width: 60%;
+  justify-content: center;
 
   &__title-container {
     margin-bottom: 4px;
+    padding-left: 8px;
+    border-left: 2px solid $color-white;
   }
   &__title {
     color: $color-white;
@@ -14,14 +19,18 @@
 
   &__type-difficulty-container {
     margin-bottom: 4px;
+    padding-left: 8px;
+    border-left: 2px solid $color-white;
   }
   &__type-difficulty {
-    color: $color-light-black;
+    color: $color-white;
     font-size: 36px;
   }
 
   &__instructor {
-    color: $color-light-black;
+    color: $color-white;
     font-size: 36px;
+    padding-left: 8px;
+    border-left: 2px solid $color-white;
   }
 }

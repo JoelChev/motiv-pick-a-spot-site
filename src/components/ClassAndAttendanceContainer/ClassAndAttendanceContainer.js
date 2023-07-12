@@ -8,6 +8,7 @@ import { ClassSessionService, PickASpotService } from "../../services";
 import ClassCell from "../ClassCell/ClassCell";
 import AttendanceContainer from "../AttendanceContainer/AttendanceContainer";
 import TimerCell from "../TimerCell/TimerCell";
+import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
 
 const classAndAttendanceContainer = "classAndAttendanceContainer";
 
@@ -228,8 +229,16 @@ export default function ClassAndAttendanceContainer(props) {
                 : `${classAndAttendanceContainer}--second`
             )}
           >
-            <ClassCell classSession={pickASpotData.classSession} />
-            <AttendanceContainer spots={pickASpotData.classSession.spots} />
+            <React.Fragment>
+              <ClassRoomTab classRoom={classRoom} />
+            </React.Fragment>
+            <React.Fragment>
+              <ClassCell classSession={pickASpotData.classSession} />
+              <AttendanceContainer
+                spots={pickASpotData.classSession.spots}
+                isFirst={isFirst}
+              />
+            </React.Fragment>
           </div>
         </React.Fragment>
       )}

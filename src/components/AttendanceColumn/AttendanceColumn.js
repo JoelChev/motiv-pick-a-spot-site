@@ -9,14 +9,18 @@ import AttendanceCell from "../AttendanceCell/AttendanceCell";
 const attendanceColumn = "attendanceColumn";
 
 export default function AttendanceColumn(props) {
-  const { index, spots } = props;
+  const { index, spots, isFirst } = props;
   const getAttendanceCells = () => {
     const attendenceCellComponents = [];
     if (spots && spots.length > 0) {
       for (let i = 0; i < spots.length; i++) {
         const spot = spots[i];
         attendenceCellComponents.push(
-          <AttendanceCell key={`attendance-${index}-${i}`} spot={spot} />
+          <AttendanceCell
+            key={`attendance-${index}-${i}`}
+            spot={spot}
+            isFirst={isFirst}
+          />
         );
       }
     }
@@ -33,4 +37,5 @@ export default function AttendanceColumn(props) {
 AttendanceColumn.propTypes = {
   index: PropTypes.number,
   spots: PropTypes.arrayOf(PropTypes.object),
+  isFirst: PropTypes.bool,
 };

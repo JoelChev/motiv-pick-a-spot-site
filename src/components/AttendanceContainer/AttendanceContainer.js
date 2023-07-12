@@ -7,10 +7,10 @@ import AttendanceColumn from "../AttendanceColumn/AttendanceColumn";
 
 const attendanceContainer = "attendanceContainer";
 
-const COLUMN_CHUNK = 5;
+const COLUMN_CHUNK = 9;
 
 export default function AttendanceContainer(props) {
-  const { spots } = props;
+  const { spots, isFirst } = props;
 
   const getAttendanceColumns = () => {
     const attendenceColumnComponents = [];
@@ -18,7 +18,11 @@ export default function AttendanceContainer(props) {
       for (let i = 0; i < spots.length; i = i + COLUMN_CHUNK) {
         const spotsSlice = spots.slice(i, i + COLUMN_CHUNK);
         attendenceColumnComponents.push(
-          <AttendanceColumn key={`attendance-${i}`} spots={spotsSlice} />
+          <AttendanceColumn
+            key={`attendance-${i}`}
+            spots={spotsSlice}
+            isFirst={isFirst}
+          />
         );
       }
     }
@@ -27,11 +31,6 @@ export default function AttendanceContainer(props) {
 
   return (
     <div className={classNames(`${attendanceContainer}`)}>
-      <div className={classNames(`${attendanceContainer}__title-container`)}>
-        <h2 className={classNames(`${attendanceContainer}__title`)}>
-          CLASS ATTENDEES & SPOTS
-        </h2>
-      </div>
       <div
         className={classNames(
           `${attendanceContainer}__attendance-column-container`
@@ -45,4 +44,5 @@ export default function AttendanceContainer(props) {
 
 AttendanceContainer.propTypes = {
   spots: PropTypes.arrayOf(PropTypes.object),
+  isFirst: PropTypes.bool,
 };

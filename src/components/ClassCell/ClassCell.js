@@ -32,7 +32,7 @@ export default function ClassCell(props) {
         </div>
       ) : (
         <div className={classNames(`${classCell}__instructor-container`)}>
-          <h2 className={classNames(`${classCell}__instructor`)}>
+          <h2 className={classNames(`${classCell}__instructor-empty`)}>
             <React.Fragment>&nbsp;</React.Fragment>
           </h2>
         </div>

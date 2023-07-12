@@ -6,7 +6,7 @@ import classNames from "classnames";
 const attendanceCell = "attendanceCell";
 
 export default function AttendanceCell(props) {
-  const { spot } = props;
+  const { spot, isFirst } = props;
 
   const getUserName = () => {
     const firstName = spot.user.firstName;
@@ -15,13 +15,7 @@ export default function AttendanceCell(props) {
   };
 
   return (
-    <div
-      className={classNames(
-        `${attendanceCell}`,
-        // Need to shift left the one marked 10 because it is in a column with single digits.
-        spot.name === "10" ? `${attendanceCell}--left` : ``
-      )}
-    >
+    <div className={classNames(`${attendanceCell}`)}>
       <span
         className={classNames(`${attendanceCell}__spot-name`)}
       >{`${spot.name}. `}</span>
@@ -30,7 +24,14 @@ export default function AttendanceCell(props) {
           {getUserName()}
         </span>
       ) : (
-        <span className={classNames(`${attendanceCell}__empty-name`)}>
+        <span
+          className={classNames(
+            `${attendanceCell}__empty-name`,
+            isFirst
+              ? `${attendanceCell}__empty-name--green`
+              : `${attendanceCell}__empty-name--grey`
+          )}
+        >
           Empty
         </span>
       )}
@@ -40,4 +41,5 @@ export default function AttendanceCell(props) {
 
 AttendanceCell.propTypes = {
   spot: PropTypes.object,
+  isFirst: PropTypes.bool,
 };
