@@ -7,7 +7,7 @@ import classNames from "classnames";
 const timerCell = "timerCell";
 
 export default function TimerCell(props) {
-  const { startDateTime, isSelected } = props;
+  const { startDateTime } = props;
 
   const countDownDate = new Date(startDateTime).getTime();
 
@@ -67,7 +67,6 @@ export default function TimerCell(props) {
     <div
       className={classNames(
         `${timerCell}`,
-        isSelected ? `${timerCell}--selected` : `${timerCell}--not-selected`,
         classHasStarted() ? `${timerCell}--red` : ``,
         isLessThanOneMinute() && !classHasStarted()
           ? `${timerCell}--yellow`
@@ -76,21 +75,32 @@ export default function TimerCell(props) {
     >
       {classHasStarted() ? (
         <div className={classNames(`${timerCell}__text-container`)}>
-          <h2 className={classNames(`${timerCell}__text--black`)}>
-            CLASS HAS BEGUN
-          </h2>
-          <h2 className={classNames(`${timerCell}__text--white`)}>WAIT</h2>
-          <h2 className={classNames(`${timerCell}__text--black`)}>
+          <h2
+            className={classNames(
+              `${timerCell}__text--black`,
+              `${timerCell}__text--bold`
+            )}
+          >
+            CLASS IN SESSION - PLEASE{" "}
+            <span
+              className={classNames(
+                `${timerCell}__text--white`,
+                `${timerCell}__text--bold`
+              )}
+            >
+              WAIT
+            </span>{" "}
             FOR INSTRUCTOR
           </h2>
         </div>
       ) : (
         <div className={classNames(`${timerCell}__text-container`)}>
           <h2 className={classNames(`${timerCell}__text--black`)}>
-            CLASS BEGINS
-          </h2>
-          <h2 className={classNames(`${timerCell}__timer-text`)}>
-            {getTimerDisplay()}
+            CLASS BEGINS IN{" "}
+            <span className={classNames(`${timerCell}__timer-text`)}>
+              {" "}
+              {getTimerDisplay()}
+            </span>
           </h2>
         </div>
       )}
@@ -100,5 +110,4 @@ export default function TimerCell(props) {
 
 TimerCell.propTypes = {
   startDateTime: PropTypes.string,
-  isSelected: PropTypes.bool,
 };

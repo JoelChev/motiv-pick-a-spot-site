@@ -4,16 +4,11 @@
   &__loading-container {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 37%;
+    transform: translate(-50%, -37%);
   }
 
-  &__classroom-tab-container {
-    display: flex;
-    background-color: $color-white;
-  }
-
-  &__class-and-attendance-tab-container {
+  &__class-and-attendance-tab-and-timer-container {
     height: 90%;
     min-height: 90%;
     display: flex;

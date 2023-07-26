@@ -7,7 +7,6 @@ import classNames from "classnames";
 import { ClassSessionService, PickASpotService } from "../../services";
 import ClassCell from "../ClassCell/ClassCell";
 import AttendanceContainer from "../AttendanceContainer/AttendanceContainer";
-import TimerCell from "../TimerCell/TimerCell";
 import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
 
 const classAndAttendanceContainer = "classAndAttendanceContainer";
@@ -74,7 +73,7 @@ export default function ClassAndAttendanceContainer(props) {
       page_size: 50,
       ordering: "start_datetime",
     };
-    params.location = location.marianatekID;
+    tomorrowParams.location = location.marianatekID;
     classSessionsResponse = {
       ...(await to(ClassSessionService.get(tomorrowParams))),
     };
@@ -217,10 +216,6 @@ export default function ClassAndAttendanceContainer(props) {
     <React.Fragment>
       {shouldShowClassAndAttendanceContainer() && (
         <React.Fragment>
-          {/* <TimerCell
-            startDateTime={pickASpotData.classSession.startDateTime}
-            isSelected={isSelected}
-          /> */}
           <div
             className={classNames(
               `${classAndAttendanceContainer}`,

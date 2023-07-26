@@ -4,6 +4,7 @@ const LocationService = require("./location.service");
 const ClassRoomService = require("./classRoom.service");
 const ClassSessionService = require("./classSession.service");
 const PickASpotService = require("./pickASpot.service");
+const TimerService = require("./timer.service");
 
 export {
   FocusDateService,
@@ -12,4 +13,5 @@ export {
   ClassRoomService,
   ClassSessionService,
   PickASpotService,
+  TimerService,
 };

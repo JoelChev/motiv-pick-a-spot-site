@@ -11,7 +11,7 @@ export default function AttendanceCell(props) {
   const getUserName = () => {
     const firstName = spot.user.firstName;
     const lastName = spot.user.lastName;
-    return `${firstName} ${lastName.charAt(0, 1)}.`;
+    return `${firstName} ${lastName.charAt(0, 1).toUpperCase()}.`;
   };
 
   return (

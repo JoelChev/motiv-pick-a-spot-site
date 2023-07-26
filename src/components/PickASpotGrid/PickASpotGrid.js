@@ -15,14 +15,17 @@ import {
   FocusDateService,
   LocationService,
   ClassRoomService,
+  TimerService,
 } from "../../services";
 import ClassAndAttendanceContainer from "../ClassAndAttendanceContainer/ClassAndAttendanceContainer";
 import FocusScheduleColumn from "../FocusScheduleColumn/FocusScheduleColumn";
-import ClassRoomTab from "../ClassRoomTab/ClassRoomTab";
+import TimerCell from "../TimerCell/TimerCell";
 
 const pickASpotGrid = "pickASpotGrid";
 
 let THIRTY_SECONDS = 5 * 60 * 60;
+
+let FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 let THREE_HOURS = 3 * 60 * 60 * 1000;
 
@@ -53,6 +56,10 @@ export default function PickaSpotGrid(props) {
   const [classRooms, setClassRooms] = React.useState([]);
   const [selectedClassRoomTabIndex, setSelectedClassRoomTabIndex] =
     React.useState(0);
+  const [classSessionStartTimes, setClassSessionStartTimes] = React.useState(
+    []
+  );
+  const [startDateTime, setStartDateTime] = React.useState(null);
   const [error, setError] = React.useState(null);
 
   function _parseStudioId() {
@@ -158,6 +165,40 @@ export default function PickaSpotGrid(props) {
     setLoading(false);
   };
 
+  const fetchClassSessionStartTimes = async () => {
+    const classSessionStartTimes = await TimerService.getClassSessionStartTimes(
+      {
+        location,
+      }
+    );
+    setClassSessionStartTimes(classSessionStartTimes);
+  };
+
+  const findNextClassStartTime = () => {
+    if (!classSessionStartTimes) {
+      return;
+    }
+    const nextClassStartTime = classSessionStartTimes.find(
+      (classSessionStartTime) => {
+        return classSessionStartTime > new Date();
+      }
+    );
+    // If not previously set, set the startDateTime now.
+    if (!startDateTime) {
+      setStartDateTime(nextClassStartTime);
+    } else {
+      // Otherwise compare, only set a new one if the time is different.
+      if (startDateTime.getTime() !== nextClassStartTime.getTime()) {
+        setStartDateTime(nextClassStartTime);
+      }
+    }
+  };
+
+  // This effect refreshes the list of class start times for the timer component.
+  React.useEffect(() => {
+    fetchClassSessionStartTimes();
+  }, [location]);
+
   // This effect refreshes the classroom data.
   React.useEffect(() => {
     fetchClassRoomData();
@@ -176,28 +217,27 @@ export default function PickaSpotGrid(props) {
     setSelectedClassRoomTabIndex(selectedClassRoomTabIndex + 1);
   }, THIRTY_SECONDS);
 
+  // This effect gets the next class start time for the timer component.
+  React.useEffect(() => {
+    findNextClassStartTime();
+  }, [classSessionStartTimes]);
+
+  // This effect refreshes the nextClassStartTime every 15 minutes.
+  useInterval(() => {
+    findNextClassStartTime();
+  }, FIFTEEN_MINUTES);
+
   const shouldShowPickASpotGrid = () => {
     return (
       !loading &&
       focusDates &&
       focusDates.length > 6 &&
       classRooms &&
-      classRooms.length > 1
+      classRooms.length > 1 &&
+      classSessionStartTimes &&
+      classSessionStartTimes.length &&
+      startDateTime
     );
-  };
-
-  const getClassRoomTabs = () => {
-    const classRoomTabs = [];
-    classRooms.forEach((classRoom, index) => {
-      classRoomTabs.push(
-        <ClassRoomTab
-          key={`class-and-attendance-container-${index}`}
-          classRoom={classRoom}
-          isSelected={index === selectedClassRoomTabIndex % 2}
-        />
-      );
-    });
-    return classRoomTabs;
   };
 
   const getClassAndAttendanceContainers = () => {
@@ -230,17 +270,13 @@ export default function PickaSpotGrid(props) {
 
       {shouldShowPickASpotGrid() && (
         <div className={classNames(`${pickASpotGrid}`)}>
-          {/* <div
-            className={classNames(`${pickASpotGrid}__classroom-tab-container`)}
-          >
-            {getClassRoomTabs()}
-          </div> */}
           <div
             className={classNames(
-              `${pickASpotGrid}__class-and-attendance-tab-container`
+              `${pickASpotGrid}__class-and-attendance-tab-and-timer-container`
             )}
           >
             {getClassAndAttendanceContainers()}
+            <TimerCell startDateTime={startDateTime} />
           </div>
 
           <div
