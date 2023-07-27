@@ -10,31 +10,38 @@ export default function ClassCell(props) {
 
   return (
     <div className={classNames(`${classCell}`)}>
+      <div className={classNames(`${classCell}__vertical-line`)}></div>
       {classSession.recurrenceClass && (
-        <div className={classNames(`${classCell}__title-container`)}>
-          <h2 className={classNames(`${classCell}__title`)}>
-            {classSession.recurrenceClass.class.name}
-          </h2>
-        </div>
-      )}
-      {classSession.recurrenceClass && (
-        <div className={classNames(`${classCell}__type-difficulty-container`)}>
-          <h2
-            className={classNames(`${classCell}__type-difficulty`)}
-          >{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
-        </div>
-      )}
-      {classSession.instructor ? (
-        <div className={classNames(`${classCell}__instructor-container`)}>
-          <h2
-            className={classNames(`${classCell}__instructor`)}
-          >{`With ${classSession.instructor.user.firstName}`}</h2>
-        </div>
-      ) : (
-        <div className={classNames(`${classCell}__instructor-container`)}>
-          <h2 className={classNames(`${classCell}__instructor-empty`)}>
-            <React.Fragment>&nbsp;</React.Fragment>
-          </h2>
+        <div className={classNames(`${classCell}__text-container`)}>
+          {classSession.recurrenceClass && (
+            <div className={classNames(`${classCell}__title-container`)}>
+              <h2 className={classNames(`${classCell}__title`)}>
+                {classSession.recurrenceClass.class.name}
+              </h2>
+            </div>
+          )}
+          {classSession.recurrenceClass && (
+            <div
+              className={classNames(`${classCell}__type-difficulty-container`)}
+            >
+              <h2
+                className={classNames(`${classCell}__type-difficulty`)}
+              >{`${classSession.recurrenceClass.class.type.name} - ${classSession.recurrenceClass.class.difficulty.name}`}</h2>
+            </div>
+          )}
+          {classSession.instructor ? (
+            <div className={classNames(`${classCell}__instructor-container`)}>
+              <h2
+                className={classNames(`${classCell}__instructor`)}
+              >{`With ${classSession.instructor.user.firstName}`}</h2>
+            </div>
+          ) : (
+            <div className={classNames(`${classCell}__instructor-container`)}>
+              <h2 className={classNames(`${classCell}__instructor-empty`)}>
+                <React.Fragment>&nbsp;</React.Fragment>
+              </h2>
+            </div>
+          )}
         </div>
       )}
     </div>

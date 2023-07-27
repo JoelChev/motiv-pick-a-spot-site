@@ -30,6 +30,7 @@ export default function ClassRoomTab(props) {
   return (
     <div className={classNames(`${classRoomTab}`)}>
       <h2 className={classNames(`${classRoomTab}__title`)}>
+        {/* There needs to be different handling for the second studio so it shows with the 2nd in an ordinal position. */}
         {isSecondStudio() ? (
           <span
             className={classNames(

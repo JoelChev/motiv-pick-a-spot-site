@@ -1,16 +1,28 @@
 .classCell {
   display: flex;
-  flex-direction: column;
   margin-bottom: 40px;
   padding-left: 8px;
   width: 60%;
-  justify-content: center;
+  justify-content: left;
+  align-items: center;
+
+  &__vertical-line {
+    width: 2px;
+    background: $color-white;
+    height: 45%;
+  }
+
+  &__text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 12px;
+  }
 
   &__title-container {
     margin-bottom: 4px;
-    padding-left: 8px;
-    border-left: 2px solid $color-white;
   }
+
   &__title {
     color: $color-white;
     font-size: 48px;
@@ -19,9 +31,8 @@
 
   &__type-difficulty-container {
     margin-bottom: 4px;
-    padding-left: 8px;
-    border-left: 2px solid $color-white;
   }
+
   &__type-difficulty {
     color: $color-white;
     font-size: 36px;
@@ -30,7 +41,5 @@
   &__instructor {
     color: $color-white;
     font-size: 36px;
-    padding-left: 8px;
-    border-left: 2px solid $color-white;
   }
 }
