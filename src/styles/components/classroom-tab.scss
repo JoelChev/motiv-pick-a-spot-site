@@ -13,5 +13,12 @@
     font-size: 36px;
     color: $color-light-black;
     font-weight: bold;
+    &--number {
+      margin-right: 4px;
+    }
+    &--ordinal {
+      margin-left: 2px;
+      font-size: 24px;
+    }
   }
 }

@@ -12,16 +12,37 @@ export default function ClassRoomTab(props) {
     if (classRoom && classRoom.Televisions && classRoom.Televisions.length) {
       let classRoomTabNameRaw = classRoom.Televisions[0].name;
       if (classRoomTabNameRaw.includes("Second")) {
-        classRoomTabNameRaw = "2nd Studio";
+        classRoomTabNameRaw = " Studio";
       }
       return classRoomTabNameRaw.toUpperCase();
     }
     return "";
   };
 
+  const isSecondStudio = () => {
+    if (classRoom && classRoom.Televisions && classRoom.Televisions.length) {
+      let classRoomTabNameRaw = classRoom.Televisions[0].name;
+      return classRoomTabNameRaw.includes("Second");
+    }
+    return false;
+  };
+
   return (
     <div className={classNames(`${classRoomTab}`)}>
       <h2 className={classNames(`${classRoomTab}__title`)}>
+        {isSecondStudio() ? (
+          <span
+            className={classNames(
+              `${classRoomTab}__title`,
+              `${classRoomTab}__title--number`
+            )}
+          >
+            2
+            <sup className={classNames(`${classRoomTab}__title--ordinal`)}>
+              ND
+            </sup>{" "}
+          </span>
+        ) : null}
         {getClassRoomTabName()}
       </h2>
     </div>
