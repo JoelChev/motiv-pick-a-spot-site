@@ -6,11 +6,18 @@ import classNames from "classnames";
 const classCell = "classCell";
 
 export default function ClassCell(props) {
-  const { classSession } = props;
+  const { classSession, isFirst } = props;
 
   return (
     <div className={classNames(`${classCell}`)}>
-      <div className={classNames(`${classCell}__vertical-line`)}></div>
+      <div
+        className={classNames(
+          `${classCell}__vertical-line`,
+          isFirst
+            ? `${classCell}__vertical-line--first`
+            : `${classCell}__vertical-line--second`
+        )}
+      ></div>
       {classSession.recurrenceClass && (
         <div className={classNames(`${classCell}__text-container`)}>
           {classSession.recurrenceClass && (
@@ -50,4 +57,5 @@ export default function ClassCell(props) {
 
 ClassCell.propTypes = {
   classSession: PropTypes.object,
+  isFirst: PropTypes.bool,
 };

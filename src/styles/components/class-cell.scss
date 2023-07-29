@@ -1,6 +1,5 @@
 .classCell {
   display: flex;
-  margin-bottom: 40px;
   padding-left: 8px;
   width: 60%;
   justify-content: left;
@@ -9,7 +8,13 @@
   &__vertical-line {
     width: 2px;
     background: $color-white;
-    height: 45%;
+
+    &--first {
+      height: 55%;
+    }
+    &--second {
+      height: 40%;
+    }
   }
 
   &__text-container {

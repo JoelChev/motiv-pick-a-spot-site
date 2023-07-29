@@ -228,7 +228,10 @@ export default function ClassAndAttendanceContainer(props) {
               <ClassRoomTab classRoom={classRoom} />
             </React.Fragment>
             <React.Fragment>
-              <ClassCell classSession={pickASpotData.classSession} />
+              <ClassCell
+                classSession={pickASpotData.classSession}
+                isFirst={isFirst}
+              />
               <AttendanceContainer
                 spots={pickASpotData.classSession.spots}
                 isFirst={isFirst}
