@@ -10,10 +10,12 @@
     background: $color-white;
 
     &--first {
-      height: 55%;
+      height: 45%;
+      margin-top: 6px;
     }
     &--second {
-      height: 40%;
+      height: 22%;
+      margin-bottom: 24px;
     }
   }
 
