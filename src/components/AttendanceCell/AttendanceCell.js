@@ -32,7 +32,7 @@ export default function AttendanceCell(props) {
               : `${attendanceCell}__empty-name--grey`
           )}
         >
-          Empty
+          Open
         </span>
       )}
     </div>
